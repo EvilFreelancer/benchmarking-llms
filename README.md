@@ -25,6 +25,7 @@ this [example notebook](https://github.com/ai-forever/mgpt/blob/main/notebooks/m
 
 To maintain consistency in my evaluations, I used the following generation parameters:
 
+* dtype: bfloat16
 * Maximum new tokens: 1024
 * Top-k: 20
 * Top-p: 0.9
