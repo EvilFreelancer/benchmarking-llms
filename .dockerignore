@@ -1,0 +1,8 @@
+/.git/
+/.idea/
+/venv/
+/apex/
+/cache/
+/ru_gpts/
+/rugpt3-custom/
+__pycache__
