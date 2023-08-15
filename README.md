@@ -67,7 +67,7 @@ The table provides a detailed comparison and performance metrics of various larg
 * **Name** - The name of the large language model (LLM), often hyperlinked to its source or documentation.
 * **Size** - The number of parameters the model has, typically represented in billions (b) or other units.
 * **Context** - The maximum number of tokens the model can consider from previous inputs in a conversation or text
-  sequence. |
+  sequence.
 * **VRAM (Gb)** - The amount of Video RAM (in gigabytes) required to run the model.
 * **MAX Init RAM (Gb)** - The maximum amount of system RAM (in gigabytes) used during the model's initialization.
 * **AVG GenTime (s)** - The average time (in seconds) it takes for the model to generate a response or complete a given
