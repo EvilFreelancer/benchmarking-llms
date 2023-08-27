@@ -1,14 +1,9 @@
 import torch
-from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer, pipeline
 import time
+from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer, pipeline
 
-# name = 'stabilityai/StableBeluga-7B'
-# name = 'huggyllama/llama-7b'
-name = 'meta-llama/Llama-2-7b-hf'
-# name = 'meta-llama/Llama-2-7b-chat-hf'
-# name = 'meta-llama/Llama-2-13b-hf'
-# name = 'meta-llama/Llama-2-13b-chat-hf'
-# name = 'togethercomputer/LLaMA-2-7B-32K'  # tokenizer -> 'huggyllama/Llama-7b'
+# name = 'ai-forever/ruGPT-3.5-13B'
+name = 'ai-forever/mGPT-13B'
 
 # Sample texts
 texts = [
@@ -32,22 +27,20 @@ start_time = time.time()
 
 # Download config
 config = AutoConfig.from_pretrained(name, trust_remote_code=True)
-dtype = torch.bfloat16  # or torch.float32
 
 # Download model source and weights
 model = AutoModelForCausalLM.from_pretrained(
-    name,
-    config=config,
-    torch_dtype=dtype,
-    trust_remote_code=True
+  name,
+  device_map='auto',
+  load_in_8bit=True,
+  # max_memory={0: f'{int(torch.cuda.mem_get_info()[0]/1024**3)-2}GB'}
+  max_memory={0: f'{int(torch.cuda.mem_get_info()[0]/1024**3)}GB'}
 )
 
 # Setting the model to evaluation mode and moving it to CUDA device
 model.eval()
-model.cuda()
 
 # Download tokenizer
-# tokenizer = AutoTokenizer.from_pretrained('huggyllama/Llama-7b')  # for LLaMA-2-7B-32K
 tokenizer = AutoTokenizer.from_pretrained(name)
 
 # Run text-generation pipeline
@@ -55,7 +48,7 @@ pipe = pipeline(
     'text-generation',
     model=model,
     tokenizer=tokenizer,
-    device='cuda:0',
+    # device='cuda:0',
 )
 
 # Model load time
@@ -81,7 +74,7 @@ with torch.no_grad():
             do_sample=True,
             use_cache=False
         )
-        # print(output)
+        print(output)
 
         # Generation time
         generation_time = time.time() - generation_start_time

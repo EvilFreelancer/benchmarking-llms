@@ -1,11 +1,8 @@
-import torch
-from peft import PeftModel, PeftConfig
-from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
+from transformers import AutoTokenizer
+from auto_gptq import AutoGPTQForCausalLM
 import time
-from conversation import Conversation
 
-# name = 'IlyaGusev/saiga2_7b_lora'
-name = 'IlyaGusev/saiga2_13b_lora'
+name = 'Gaivoronsky/ruGPT-3.5-13B-8bit'
 
 # Sample texts
 texts = [
@@ -27,29 +24,16 @@ texts = [
 # Start model load time
 start_time = time.time()
 
-# Download config
-config = PeftConfig.from_pretrained(name)
-dtype = torch.float16
-
-# Download model source and weights
-model = AutoModelForCausalLM.from_pretrained(
-    config.base_model_name_or_path,
-    load_in_8bit=True,
-    # torch_dtype=torch.float16,
-    device_map="auto"
-)
-model = PeftModel.from_pretrained(
-    model,
+# Download model and tokenizer
+tokenizer = AutoTokenizer.from_pretrained(name)
+model = AutoGPTQForCausalLM.from_quantized(
     name,
-    legacy=True,
-    torch_dtype=torch.float16
+    # use_safetensors=True,
+    trust_remote_code=True,
+    device="cuda:0",
+    use_triton=False,
+    quantize_config=None
 )
-model.eval()
-
-# Download tokenizer
-tokenizer = AutoTokenizer.from_pretrained(name, use_fast=False)
-generation_config = GenerationConfig.from_pretrained(name)
-# print(generation_config)
 
 # Model load time
 model_load_time = time.time() - start_time
@@ -59,35 +43,23 @@ print(f"Model loading time: {model_load_time:.2f} seconds")
 total_generation_time = 0
 total_tokens = 0
 
-
-def generate(model, tokenizer, prompt, generation_config):
-    data = tokenizer(prompt, return_tensors="pt")
-    data = {k: v.to(model.device) for k, v in data.items()}
-    output_ids = model.generate(
-        **data,
-        # generation_config=generation_config,
-        max_new_tokens=1024,
-        top_k=20,
-        top_p=0.9,
-        repetition_penalty=1.1,
-        # seed=42,
-        do_sample=True,
-        use_cache=False
-    )[0]
-    output_ids = output_ids[len(data["input_ids"][0]):]
-    output = tokenizer.decode(output_ids, skip_special_tokens=True)
-    return output.strip()
-
-
-# Generating text for each sample
 for text in texts:
     print(f"\nSample: {text}")
     generation_start_time = time.time()  # Start generation time
-    # conversation = Conversation()
-    # conversation.add_user_message(text)
-    # prompt = conversation.get_prompt(tokenizer)
-    # print(prompt)
-    output = generate(model, tokenizer, text, generation_config)
+
+    encoded_input = tokenizer(text, return_tensors='pt', add_special_tokens=False).to('cuda')
+    output = model.generate(
+        **encoded_input,
+        num_beams=1,
+        max_new_tokens=1024,
+        top_k=20,
+        top_p=0.9,
+        repetition_penalty=1.2,
+        # seed=42,
+        do_sample=True,
+        use_cache=False
+    )
+    output = tokenizer.decode(output[0], skip_special_tokens=True)
     print(output)
 
     # Generation time
@@ -103,7 +75,7 @@ for text in texts:
     # Print results for this sample
     print(f"Generation time for this sample: {generation_time:.2f} seconds")
     print(f"Tokens for this sample: {tokens_for_this_sample}")
-    print(f"Tokens per second: {tokens_per_second:.1f} t/s\n")
+    print(f"Tokens per second: {tokens_per_second:.2f} t/s\n")
 
 # Calculate average values
 average_generation_time = total_generation_time / len(texts)
@@ -112,5 +84,5 @@ average_tokens_per_second = total_tokens / total_generation_time
 
 # Print average results
 print(f"\nAverage generation time: {average_generation_time:.2f} seconds")
-print(f"Average tokens: {average_tokens:.1f}")
-print(f"Average tokens per second: {average_tokens_per_second:.1f} t/s")
+print(f"Average tokens: {average_tokens:.2f}")
+print(f"Average tokens per second: {average_tokens_per_second:.2f} t/s")

@@ -4,9 +4,9 @@ import time
 
 # name = 'stabilityai/StableBeluga-7B'
 # name = 'huggyllama/llama-7b'
-name = 'meta-llama/Llama-2-7b-hf'
+# name = 'meta-llama/Llama-2-7b-hf'
 # name = 'meta-llama/Llama-2-7b-chat-hf'
-# name = 'meta-llama/Llama-2-13b-hf'
+name = 'meta-llama/Llama-2-13b-hf'
 # name = 'meta-llama/Llama-2-13b-chat-hf'
 # name = 'togethercomputer/LLaMA-2-7B-32K'  # tokenizer -> 'huggyllama/Llama-7b'
 
@@ -38,13 +38,17 @@ dtype = torch.bfloat16  # or torch.float32
 model = AutoModelForCausalLM.from_pretrained(
     name,
     config=config,
-    torch_dtype=dtype,
-    trust_remote_code=True
+    # torch_dtype=dtype,
+    trust_remote_code=True,
+    device_map='auto',
+    load_in_8bit=True,
+    # max_memory={0: f'{int(torch.cuda.mem_get_info()[0]/1024**3)-2}GB'}
+    max_memory={0: f'{int(torch.cuda.mem_get_info()[0] / 1024 ** 3)}GB'}
 )
 
 # Setting the model to evaluation mode and moving it to CUDA device
 model.eval()
-model.cuda()
+# model.cuda()
 
 # Download tokenizer
 # tokenizer = AutoTokenizer.from_pretrained('huggyllama/Llama-7b')  # for LLaMA-2-7B-32K
@@ -55,7 +59,7 @@ pipe = pipeline(
     'text-generation',
     model=model,
     tokenizer=tokenizer,
-    device='cuda:0',
+    # device='cuda:0',
 )
 
 # Model load time
