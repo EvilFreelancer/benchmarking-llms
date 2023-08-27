@@ -59,8 +59,8 @@ The table provides a detailed comparison and performance metrics of various larg
 | [MosaicML 7b-storywriter](https://huggingface.co/mosaicml/mpt-7b-storywriter)  | 7b-storywriter | 65536   | ~22.9     | ~10.4             | ~109.12         | ~1048.2    | ~9.6    |
 | [MosaicML 7b-instruct](https://huggingface.co/mosaicml/mpt-7b-instruct)        | 7b-instruct    | 4096    | ~22.93    | ~9.8              | ~110.47         | ~1045.2    | ~9.5    |
 | [MosaicML 7b-instruct-8k](https://huggingface.co/mosaicml/mpt-7b-instruct-8k)  | 7b-instruct-8k | 8192    | ~22.66    | ~10.5             | ~84.32          | ~1045.5    | ~12.4   |
-| [Saiga 2 LoRa 7b](https://huggingface.co/IlyaGusev/saiga2_7b_lora)             | 7b_lora        | 2048    | ~7.9      | ~10.9             | ~11.30          | ~71.9      | ~6.4    | 
-| [Saiga 2 LoRa 13b](https://huggingface.co/IlyaGusev/saiga2_13b_lora)           | 13b_lora       | 2048    | ~14.25    | ~                 | ~9.81           | ~40.8      | ~4.2    |
+| [Saiga 2 LoRa 7b](https://huggingface.co/IlyaGusev/saiga2_7b_lora)             | 7b_lora        | 2048    | ~7.9      | ~8.9              | ~11.30          | ~71.9      | ~6.4    |
+| [Saiga 2 LoRa 13b](https://huggingface.co/IlyaGusev/saiga2_13b_lora)           | 13b_lora       | 2048    | ~14.25    | ~8.3              | ~9.81           | ~40.8      | ~4.2    |
 | [ruGPT 3 small](https://huggingface.co/ai-forever/rugpt3small_based_on_gpt2)   | 125m           | 2048    | ~6.18     | ~1.3              | ~6.4            | ~1041.8    | ~162.7  |
 | [ruGPT 3 medium](https://huggingface.co/ai-forever/rugpt3medium_based_on_gpt2) | 410m           | 2048    | ~6.66     | ~2.6              | ~12.74          | ~1044.3    | ~82.0   |
 | [ruGPT 3 large](https://huggingface.co/ai-forever/rugpt3large_based_on_gpt2)   | 750m           | 2048    | ~7.48     | ~5.2              | ~15.19          | ~1045.5    | ~68.8   |

@@ -4,8 +4,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
 import time
 from conversation import Conversation
 
-# name = 'IlyaGusev/saiga2_7b_lora'
-name = 'IlyaGusev/saiga2_13b_lora'
+name = 'IlyaGusev/saiga2_7b_lora'
+# name = 'IlyaGusev/saiga2_13b_lora'
 
 # Sample texts
 texts = [
