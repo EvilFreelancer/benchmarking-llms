@@ -2,10 +2,14 @@ import torch
 from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer, pipeline
 import time
 
-name = 'stabilityai/StableBeluga-7B'
+# name = 'stabilityai/StableBeluga-7B'
 # name = 'huggyllama/llama-7b'
-# name = 'meta-llama/Llama-2-7b'
+# name = 'meta-llama/Llama-2-7b-hf'
+# name = 'meta-llama/Llama-2-7b-chat-hf'
+# name = 'meta-llama/Llama-2-13b-hf'
+# name = 'meta-llama/Llama-2-13b-chat-hf'
 # name = 'togethercomputer/LLaMA-2-7B-32K'  # tokenizer -> 'huggyllama/Llama-7b'
+name = 'IlyaGusev/saiga2_7b_lora'
 
 # Sample texts
 texts = [

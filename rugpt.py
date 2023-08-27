@@ -5,7 +5,8 @@ import time
 # name = 'ai-forever/rugpt3small_based_on_gpt2'
 # name = 'ai-forever/rugpt3medium_based_on_gpt2'
 # name = 'ai-forever/rugpt3large_based_on_gpt2'
-name = 'ai-forever/mGPT'
+# name = 'ai-forever/mGPT'
+name = 'ai-forever/ruGPT-3.5-13B'
 
 # Sample texts
 texts = [
