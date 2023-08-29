@@ -1,12 +1,11 @@
 import torch
-from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer, pipeline
+from transformers import AutoModelForCausalLM, pipeline
+from tokenization_qwen import QWenTokenizer
 import time
+from conversation import Conversation
 
-# name = 'ai-forever/rugpt3small_based_on_gpt2'
-# name = 'ai-forever/rugpt3medium_based_on_gpt2'
-# name = 'ai-forever/rugpt3large_based_on_gpt2'
-# name = 'ai-forever/mGPT'
-name = 'ai-forever/ruGPT-3.5-13B'
+name = 'Qwen/Qwen-VL'
+# name = 'Qwen/Qwen-7B'
 
 # Sample texts
 texts = [
@@ -28,16 +27,12 @@ texts = [
 # Start model load time
 start_time = time.time()
 
-# Download config
-config = AutoConfig.from_pretrained(name, trust_remote_code=True)
-dtype = torch.bfloat16  # or torch.float32
-
 # Download model source and weights
 model = AutoModelForCausalLM.from_pretrained(
     name,
-    config=config,
-    torch_dtype=dtype,
-    trust_remote_code=True
+    device_map="auto",
+    trust_remote_code=True,
+    bf16=True
 )
 
 # Setting the model to evaluation mode and moving it to CUDA device
@@ -45,7 +40,7 @@ model.eval()
 model.cuda()
 
 # Download tokenizer
-tokenizer = AutoTokenizer.from_pretrained(name)
+tokenizer = QWenTokenizer.from_pretrained(name)
 
 # Run text-generation pipeline
 pipe = pipeline(
@@ -63,19 +58,17 @@ print(f"Model loading time: {model_load_time:.2f} seconds")
 total_generation_time = 0
 total_tokens = 0
 
-# Clear GPU cache to free up memory
-# torch.cuda.empty_cache()
-
 # Generating text for each sample
 with torch.no_grad():
     for text in texts:
-        print(f"\nSample: {text}")
+        conversation = Conversation()
+        conversation.add_user_message(text)
+        prompt = conversation.get_prompt(tokenizer)
 
-        # Start generation time
-        generation_start_time = time.time()
-
+        print(f"\nSample: {prompt}")
+        generation_start_time = time.time()  # Start generation time
         output = pipe(
-            text,
+            prompt,
             max_new_tokens=1024,
             top_k=20,
             top_p=0.9,
@@ -84,7 +77,7 @@ with torch.no_grad():
             do_sample=True,
             use_cache=False
         )
-        # print(output)
+        print(output)
 
         # Generation time
         generation_time = time.time() - generation_start_time
@@ -100,9 +93,6 @@ with torch.no_grad():
         print(f"Generation time for this sample: {generation_time:.2f} seconds")
         print(f"Tokens for this sample: {tokens_for_this_sample}")
         print(f"Tokens per second: {tokens_per_second:.1f} t/s\n")
-
-        # Clear GPU cache to free up memory
-        # torch.cuda.empty_cache()
 
 # Calculate average values
 average_generation_time = total_generation_time / len(texts)

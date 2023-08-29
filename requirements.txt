@@ -1,5 +1,5 @@
-transformers==4.32.0
-tokenizers==0.13.3
+transformers==4.31.0
+#tokenizers==0.13.3
 accelerate==0.21.0
 xformers==0.0.20
 # Saiga-2
@@ -10,3 +10,7 @@ sentencepiece==0.1.99
 protobuf==4.24.2
 # ruGPT-3.5 8bit
 auto-gptq==0.4.2
+# Qwen-VL
+transformers_stream_generator==0.0.4
+torchvision==0.15.2
+tiktoken==0.4.0

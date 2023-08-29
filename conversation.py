@@ -1,5 +1,5 @@
 DEFAULT_MESSAGE_TEMPLATE = "<s>{role}\n{content}</s>\n"
-DEFAULT_SYSTEM_PROMPT = "Ты — Сайга, русскоязычный автоматический ассистент. Ты разговариваешь с людьми и помогаешь им."
+DEFAULT_SYSTEM_PROMPT = "Ты — Qwen, русскоязычный автоматический ассистент. Ты разговариваешь с людьми и помогаешь им."
 
 
 class Conversation:
