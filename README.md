@@ -72,6 +72,11 @@ The table provides a detailed comparison and performance metrics of various larg
 | [mGPT](https://huggingface.co/ai-forever/mGPT)                                    | 1.3b           | 2048    | ~22.96        | ~7.01             | ~24.72          | ~1046.8    | ~42.3   |
 | [mGPT 13b](https://huggingface.co/ai-forever/mGPT-13B)                            | 13b            | 2048    |               |                   |                 |            |         |
 | [mGPT 13b (load_in_8bit)](https://huggingface.co/ai-forever/mGPT-13B)             | 13b-8bit       | 2048    | ~20.06        | ~12.5             | ~155.81         | ~1042.5    | ~6.7    |
+| [Qwen VL](https://huggingface.co/Qwen/Qwen-VL)                                    | 7B             | 8192    | ~22.6         | ~5.6              | ~93.62          | ~1034.7    | ~11.1   |
+| [Qwen VL Chat](https://huggingface.co/Qwen/Qwen-VL-Chat)                          | 7B-chat        | 8192    | ~22.6         | ~5.3              | ~95.21          | ~1037.7    | ~10.9   |
+| [Qwen 7B](https://huggingface.co/Qwen/Qwen-7B)                                    | 7B             | 8192    | ~17.32        | ~3.6              | ~89.84          | ~1037.6    | ~11.5   |
+| [Qwen 7B Chat](https://huggingface.co/Qwen/Qwen-7B-Chat)                          | 7B-chat        | 8192    | ~18.22        | ~3.3              | ~92.76          | ~944.8     | ~10.2   |
+| [Qwen 7B Chat q4](https://huggingface.co/Qwen/Qwen-7B-Chat-Int4)                  | 7B-chat-int4   | 8192    | ~7.38         | ~9.26             | ~77.22          | ~930.8     | ~12.1   |
 
 * **Name** - The name of the large language model (LLM), often hyperlinked to its source or documentation.
 * **Size** - The number of parameters the model has, typically represented in billions (b) or other units.

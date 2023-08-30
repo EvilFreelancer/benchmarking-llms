@@ -1,13 +1,11 @@
 import torch
-from transformers import AutoModelForCausalLM, pipeline
+from transformers import GenerationConfig, pipeline
+from auto_gptq import AutoGPTQForCausalLM
 from tokenization_qwen import QWenTokenizer
 import time
 from conversation import Conversation
 
-# name = 'Qwen/Qwen-VL'
-# name = 'Qwen/Qwen-VL-Chat'
-# name = 'Qwen/Qwen-7B'
-name = 'Qwen/Qwen-7B-Chat'
+name = 'Qwen/Qwen-7B-Chat-Int4'
 
 # Sample texts
 texts = [
@@ -30,12 +28,13 @@ texts = [
 start_time = time.time()
 
 # Download model source and weights
-model = AutoModelForCausalLM.from_pretrained(
+model = AutoGPTQForCausalLM.from_quantized(
     name,
     device_map="auto",
     trust_remote_code=True,
-    bf16=True
+    use_safetensors=True
 )
+
 
 # Setting the model to evaluation mode and moving it to CUDA device
 model.eval()
